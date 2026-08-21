@@ -1,0 +1,144 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jadedesign}[2026 Jade Corporate Design]
+
+% ------------------------------------------------
+% Jade-Logo mit Höhenangabe \JadeLogo[height=2cm]
+% ------------------------------------------------
+
+\newcommand{\JadeLogo}[1][]{%
+	\includegraphics[#1]{jadelogo.jpg}%
+}
+
+% ------------------------------------------------
+% Jade-Farben
+% ------------------------------------------------
+
+\definecolor{jaderot}{RGB}{227,6,19}
+\definecolor{jadegrau}{RGB}{90,95,86}
+\definecolor{jadegruen}{RGB}{110,170,35}
+
+\colorlet{hintergrund}{jadegrau!20}
+
+% abgestuftes hellrot:
+\definecolor{hellrot1}{RGB}{244,161,141}
+\definecolor{hellrot2}{RGB}{247,187,174}
+\definecolor{hellrot3}{RGB}{250,206,198}
+\definecolor{hellrot4}{RGB}{252,227,222}
+
+
+% ------------------------------------------------
+% Jade-Schriften
+% ------------------------------------------------
+
+\usepackage{fontspec}       % benötigt xelatex
+
+\defaultfontfeatures{Mapping=tex-text}
+\defaultfontfeatures{Ligatures=TeX}
+
+%-------------------------%
+% NDS Frutiger 45 Light
+%-------------------------%
+
+\IfFontExistsTF{NDSFrutiger 45 Light}{
+    % Systemfont vorhanden
+    \setmainfont[
+        BoldFont={NDSFrutiger 65 Bold},
+        ItalicFont={NDSFrutiger 46 Light Italic},
+        BoldItalicFont={NDSFrutiger 46 Light Italic},
+        BoldItalicFeatures={FakeBold=4}
+    ]{NDSFrutiger 45 Light}
+
+    \setsansfont[
+        BoldFont={NDSFrutiger 65 Bold},
+        ItalicFont={NDSFrutiger 46 Light Italic},
+        BoldItalicFont={NDSFrutiger 46 Light Italic},
+        BoldItalicFeatures={FakeBold=4}
+    ]{NDSFrutiger 45 Light}
+
+}{
+    % Fallback: mitgelieferte TTF-Dateien
+    \setmainfont[
+        Path=fonts/,
+        Extension=.ttf,
+		UprightFont=ndsfrutiger45light,
+        BoldFont=ndsfrutiger45lightbold,
+        ItalicFont=ndsfrutiger45lightitalic,
+        BoldItalicFont=ndsfrutiger45lightitalic,
+        BoldItalicFeatures={FakeBold=4}
+    ]{ndsfrutiger45light}
+
+    \setsansfont[
+        Path=fonts/,
+        Extension=.ttf,
+		UprightFont=ndsfrutiger45light,
+        BoldFont=ndsfrutiger45lightbold,
+        ItalicFont=ndsfrutiger45lightitalic,
+        BoldItalicFont=ndsfrutiger45lightitalic,
+        BoldItalicFeatures={FakeBold=4}
+    ]{ndsfrutiger45light}
+}
+
+%-------------------------%
+% Exo 2
+%-------------------------%
+
+\IfFontExistsTF{Exo 2 Regular}{
+
+    \newfontfamily\exo[
+        BoldFont={Exo 2 Bold},
+        ItalicFont={Exo 2 Italic},
+        BoldItalicFont={Exo 2 Bold Italic}
+    ]{Exo 2 Regular}
+
+    \newfontfamily\exolight[
+        BoldFont={Exo 2 Regular},
+        ItalicFont={Exo 2 Light Italic},
+        BoldItalicFont={Exo 2 Light Italic},
+        BoldItalicFeatures={FakeBold=4}
+    ]{Exo 2 Light}
+
+}{
+    
+    \newfontfamily\exo[
+        Path=fonts/,
+        Extension=.ttf,
+        BoldFont=Exo2-Bold,
+        ItalicFont=Exo2-Italic,
+        BoldItalicFont=Exo2-BoldItalic
+    ]{Exo2-Regular}
+
+
+    \newfontfamily\exolight[
+        Path=fonts/,
+        Extension=.ttf,
+        BoldFont=Exo2-Regular,
+        ItalicFont=Exo2-LightItalic,
+        BoldItalicFont=Exo2-LightItalic,
+        BoldItalicFeatures={FakeBold=4}
+    ]{Exo2-Light}
+
+}
+
+
+%-------------------------%
+% Handschrift
+%-------------------------%
+
+\IfFontExistsTF{Nothing You Could Do}{
+
+    \newfontfamily\handschrift[
+        BoldFont={Nothing You Could Do}
+    ]{Nothing You Could Do}
+
+}{
+    
+    \newfontfamily\handschrift[
+        Path=fonts/,
+        Extension=.ttf,
+        BoldFont=nothing-you-could-do-bold
+    ]{nothing-you-could-do-regular}
+
+}
+
+
+% \raggedright    % Corporate Design der JHS ist linksbündig...

@@ -1,0 +1,145 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jademath}[2026 Jade Mathematic Settings]
+
+% ------------------------ %
+% Mathematische Grundlagen
+% ------------------------ %
+
+%\RequirePackage{amsmath} 
+%\RequirePackage{amstext}   
+\RequirePackage{mathtools}	% lädt amsmath und amstext
+\RequirePackage{amssymb}  
+
+% ---------------------- %
+% Mathematische Notation
+% ---------------------- %
+
+\RequirePackage{isomath}   
+% RequirePackage{unicode-math} % möglicherweise besser bei XeLaTeX?
+
+
+% ------------------------- %
+% Polynome und Berechnungen
+% ------------------------- %
+
+\RequirePackage{polynom}
+\RequirePackage{fp}
+\RequirePackage{calc}
+
+
+% --------------------------- %
+% Flexible Gleichungsumgebung
+% --------------------------- %
+
+\newenvironment{gleichung}[1][rcl]
+{%
+    % \thickmuskip=12mu   % Abstand um = eqnarray-ähnlich, Standard ist ca. 5mu
+    \vspace{-1ex}%
+    \[
+    \renewcommand{\arraystretch}{1.2}%
+    \begin{array}{#1}
+}
+{%
+    \end{array}%
+    \]%
+    
+    \vspace{-1ex}
+}
+
+% ------------------- %
+% Erweiterte Matrizen
+% ------------------- %
+
+\RequirePackage{graphicx}
+
+% Matrixerweiterungen {pmatrix}[cc|c] 
+% für matrix und alle Derivate aus amsmath
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+\hskip -\arraycolsep
+\let\@ifnextchar\new@ifnextchar
+\array{#1}}
+\makeatother
+
+\newcommand{\scalematrix}[2]{%
+    {\renewcommand{\arraystretch}{0.8}% Standard ist 1.0
+    \scalebox{#1}{$#2$}}%
+}
+
+\newcommand{\indexmatrix}[1]{%
+    {\renewcommand{\arraystretch}{0.8}% Standard ist 1.0
+    \scalebox{0.5}{$\begin{array}{rcl}#1\end{array}$}}%
+}
+
+\newcommand{\inlinematrix}[1]{%
+    \big(\,\begin{matrix}#1\end{matrix}\,\big)%
+}
+
+
+% ----------------------------------- %
+% Mathematische Notation und Symbole
+% ----------------------------------- %
+
+\renewcommand{\implies}{\Rightarrow}
+\renewcommand{\iff}{\Leftrightarrow}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+
+\renewcommand{\i}{\mathrm{i}}
+
+\renewcommand{\Re}{\mathsf{Re}}
+\renewcommand{\Im}{\mathsf{Im}}
+
+% ---------------------------- %
+% Analysis und Lineare Algebra
+% ---------------------------- %
+
+\newcommand{\abs}[1]{|#1|}                  	% Betrag
+\newcommand{\euler}{\mathrm{e}}             	% Eulersches e
+\newcommand{\sgn}[1]{\mathsf{sgn}(#1)}      	% Signumfunktion
+
+\newcommand{\strich}{{\,\prime}}            	% Ableitung
+
+\newcommand{\dx}{\, \mathsf{d}x}            	% Integrationsvariable
+\newcommand{\dt}{\, \mathsf{d}t}            	% Integrationsvariable
+
+\newcommand{\sprod}[2]{\langle #1, #2\rangle}  	% Skalarprodukt
+
+\newcommand{\X}{\mathbb X}                  	% Designmatrix
+
+\renewcommand{\L}{\mathbb L}                	% Lösungsmenge
+\newcommand{\rg}{\mathsf{rg}}               	% Rang
+
+% -------------------------------- %
+% Statistik und Wahrscheinlichkeit 
+% -------------------------------- %
+
+\newcommand{\W}{\mathbb W}                  	% Wertebereich
+
+\newcommand{\mo}[1]{#1_\mathsf{mod}}        	% Median
+\newcommand{\am}[1]{\,\overline{{#1}\,}}        % Arithmetisches Mittel
+% \newcommand{\am}[1]{\,\overline{\!{#1}\,}}    % Arithmetisches Mittel, overline italic
+\newcommand{\gm}[1]{#1_\mathsf{geom}}          	% Geometrisches Mittel
+\newcommand{\med}[1]{#1_\mathsf{med}}       	% Median
+\newcommand{\var}[1]{\mathsf{var}(#1)}      	% Varianz
+\newcommand{\std}[1]{\sigma(#1)}            	% Standardabweichung
+\newcommand{\md}[1]{\mathsf{md}(#1)}        	% mittlere absolute Abweichung vom Median
+\newcommand{\mad}[1]{\mathsf{mad}(#1)}      	% Median der absoluten Abweichung
+\newcommand{\cov}[1]{\mathsf{cov}(#1)}      	% Kovarianz
+\renewcommand{\r}[1]{\mathsf{r}(#1)}        	% Korrelationskoeffizient
+\newcommand{\Cov}[1]{\mathsf{Cov}(#1)}      	% Kovarianzmatrix, Cov oder \Sigma
+
+\newcommand{\dach}[1]{\hat{#1}}             	% Schätzer
+\newcommand{\E}[1]{\mathbb E(#1)}           	% Erwartungswert
+\newcommand{\Var}[1]{\mathsf{Var}(#1)}      	% Varianz bei ZV
+\newcommand{\SE}[1]{\mathsf{SE}(#1)}       		% Standardfehler bei ZV
+\newcommand{\Bias}[1]{\mathsf{Bias}(#1)}    	% Bias bei ZV
+\newcommand{\MSE}[1]{\mathsf{MSE}(#1)}      	% Mean Square Error bei ZV
+
+\newcommand{\LLH}[1]{\mathsf{L}(#1)}        	% Likelihood
+\newcommand{\logLLH}[1]{\mathsf{logL}(#1)}  	% LogLikelihood
+

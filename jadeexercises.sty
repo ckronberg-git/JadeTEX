@@ -1,0 +1,179 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jadeexercises}[2026 Jade Exercises]
+
+% ============================================================
+% Abhängigkeiten
+% ============================================================
+
+\RequirePackage{exsheets}
+\RequirePackage{etoolbox}
+\RequirePackage{ifthen}
+\RequirePackage{fp}
+\RequirePackage{tcolorbox}
+
+
+% ============================================================
+% ExSheets – Grundeinstellungen
+% ============================================================
+
+% \RequirePackage[counter-format=se.qu,counter-within=section]{exsheets}
+\SetupExSheets{
+	question/type=exam, 
+	counter-format=qu[1], 
+	counter-within=section, 
+	headings=block-subtitle
+}
+
+\renewcommand\thequestion{\arabic{question}}
+
+\DeclareInstance{exsheets-heading}{block-subtitle}{default}{
+    join = {
+        title[r,B]number[l,B](.333em,0pt) ;
+        title[r,B]subtitle[l,B](1em,0pt)
+    },
+    attach = {
+        main[l,vc]title[l,vc](0pt,0pt) ;
+        main[r,vc]points[l,vc](\marginparsep,0pt)
+    }
+}
+
+% Abstand nach Frage und Lösung
+\AtEndEnvironment{question}{\bigskip}
+\AtEndEnvironment{solution}{\bigskip}
+
+% ============================================================
+% Aufgabenblätter
+% ============================================================
+
+\newcommand{\blatt}[3]{
+    \clearpage
+    
+    \renewcommand{\titel}{#1}
+    \ifstrempty{#2}
+        {}% nichts tun, wenn leer
+        {\setcounter{uebung}{#2}}
+    \renewcommand{\untertitel}{#3}
+    
+    \phantomsection
+    \addcontentsline{toc}{subsection}{
+    	\titel\ifstrempty{#2}{}{\ \theuebung}
+    }
+    
+    \ 
+    \vspace{2ex}
+    
+    \setcounter{page}{1}
+    \thispagestyle{deckblatt}
+
+    \centerline{%
+    	\huge{%
+    		\textcolor{jadegrau}{%
+    			\exo{\textbf{%
+    				\titel\ifstrempty{#2}{}{\ \theuebung}
+    			}}%
+    		}%
+    	}%
+    }%
+    
+    \vspace{1ex}
+
+    \centerline{(\untertitel)}
+
+    \vspace{4ex}
+}
+
+
+\newcommand{\aufgabe}[2]{%
+    \renewcommand{\bewertung}{#1}
+    \input{#2}
+}
+
+% ============================================================
+% Aufgabensammlung
+% ============================================================
+
+\newif\ifsammlung   % Neue bedingte Verzweigung
+\sammlungfalse  
+
+% Umgebungslogik manuell umsetzen, Probleme mit \if...\fi und Umgebungen wie itemize
+\newcommand{\sammlung}[1]{%
+    \ifsammlung
+        \begin{center}%
+            \begin{small}
+	            \begin{tcolorbox}[
+	            	width=.9\textwidth,
+	            	colback={jadegrau!20}
+	            ]%
+	                 #1
+	            \end{tcolorbox}%
+            \end{small}
+        \end{center}%
+    \fi
+}
+
+% ============================================================
+% Punkte und Anforderungsbereiche
+% ============================================================
+
+% Punktezahlen für Anforderungsbereiche AFB I - III
+\newcommand{\punkteI}{0}
+\newcommand{\punkteII}{0}
+\newcommand{\punkteIII}{0}
+
+\newcommand{\addPunkte}[2]{
+	% Punkte zählen
+	\ifthenelse{\equal{#1}{I}}{
+		\FPeval{\i}{clip(\punkteI + #2)}
+		\renewcommand{\punkteI}{\i}
+	}{%
+		\ifthenelse{\equal{#1}{II}}{
+			\FPeval{\ii}{clip(\punkteII + #2)}
+			\renewcommand{\punkteII}{\ii}
+		}{%
+			\ifthenelse{\equal{#1}{III}}{
+				\FPeval{\iii}{clip(\punkteIII + #2)}
+				\renewcommand{\punkteIII}{\iii}
+			}{}%
+		}%
+	}%
+}
+
+
+\newcommand{\aufgabenliste}{}   % Liste mit den Aufgabennamen
+
+\newcommand{\addAufgabe}[6]{
+    % Aufgabe speichern
+    \expandafter\gdef\csname aufgabe:#1:#2\endcsname{%
+    	#6\ref{#1}~#2 & #3 & #4 & #5%
+    }%
+    \listadd{\aufgabenliste}{#1:#2}%
+}
+
+\newcommand{\printAufgabe}[1]{%
+	\csname aufgabe:#1\endcsname \\
+}
+
+% ============================================================
+% AFB-Makros
+% ============================================================
+
+% #1 = Nummer
+% #2 = Teil
+% #3 = AFB
+% #4 = Punkte
+% #5 = Inhalt
+
+\newcommand{\AFB}[5]{
+    % Punkte zählen
+    \addPunkte{#3}{#4}
+    % Aufgabe speichern
+    \addAufgabe{#1}{#2}{#3}{#4}{#5}{}
+}
+
+\newcommand{\AFBstart}[5]{%
+    % Punkte zählen
+    \addPunkte{#3}{#4}
+    % Aufgabe speichern
+    \addAufgabe{#1}{#2}{#3}{#4}{#5}{\midrule}
+}
+

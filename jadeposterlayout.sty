@@ -1,0 +1,446 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jadeposterlayout}[2026 Jade Poster Layout]
+
+% ------------------------------- %
+% Allgemeine Beamer-Einstellungen
+% ------------------------------- %
+
+% Keine Navigationssymbole am unteren Rand
+\setbeamertemplate{navigation symbols}{}
+
+% ------------------------------- %
+% Schriftgrößen
+% ------------------------------- %
+
+\newcommand{\JadePosterFontSize}{24pt}
+\newcommand{\JadePosterLineHeight}{30pt} % *1.25
+
+\newcommand{\JadePosterSubFontSize}{22pt}
+\newcommand{\JadePosterSubLineHeight}{27pt}
+
+\newcommand{\JadePosterSubSubFontSize}{20pt}
+\newcommand{\JadePosterSubSubLineHeight}{25pt}
+
+% ------------------------------------------------
+% Seitenlayout und Listen
+% ------------------------------------------------
+
+\RequirePackage{tcolorbox}
+\RequirePackage{tikz}
+\RequirePackage[onehalfspacing]{setspace} 
+
+% Kugel für itemize
+\newcommand{\JadePosterItemBall}[1]{%
+	\raisebox{0.15ex}{%
+		\tikz[baseline=-0.5ex]{%
+			\shade[
+			shading=ball,
+			ball color=#1
+			] (0,0) circle (0.3em);
+		}%
+	}%
+}
+
+\setbeamertemplate{itemize item}{%
+	\JadePosterItemBall{jaderot}%
+}
+
+\setbeamertemplate{itemize subitem}{%
+	\JadePosterItemBall{jadegrau}%
+}
+
+\setbeamertemplate{itemize subsubitem}{%
+	\JadePosterItemBall{jadegrau!50}%
+}
+
+% nummerierte Kugel für enumerate
+\newcommand{\JadePosterEnumBall}[3]{%
+	\tikz[baseline=(char.base)]{%
+		\shade[
+		shading=ball,
+		ball color=#1
+		] (0,0) circle (0.6em);
+		\node[
+		text=#2,
+		font=\sffamily\bfseries
+		] (char) {#3};
+	}%
+}
+
+\setbeamertemplate{enumerate item}{%
+	\JadePosterEnumBall{jaderot}{white}{\arabic{enumi}}%
+}
+
+\setbeamertemplate{enumerate subitem}{%
+	\JadePosterEnumBall{jadegrau}{white}{\arabic{enumii}}%
+}
+
+\setbeamertemplate{enumerate subsubitem}{%
+	\JadePosterEnumBall{jadegrau!50}{jaderot}{\arabic{enumiii}}%
+}
+
+% Schriftgrößen auf den Ebenen
+
+\setbeamerfont{itemize/enumerate body}{
+	size=\fontsize{\JadePosterFontSize}{\JadePosterLineHeight}\selectfont
+}
+
+\setbeamerfont{itemize/enumerate subbody}{
+	size=\fontsize{\JadePosterSubFontSize}{\JadePosterSubLineHeight}\selectfont
+}
+
+\setbeamerfont{itemize/enumerate subsubbody}{
+	size=\fontsize{\JadePosterSubSubFontSize}{\JadePosterSubSubLineHeight}\selectfont
+}
+% ------------ %
+% Abstände
+% ------------ %
+
+\newlength{\JadePosterMarginHorizontal}
+\newlength{\JadePosterMarginVertical}
+
+\setlength{\JadePosterMarginHorizontal}{3cm}
+\setlength{\JadePosterMarginVertical}{4cm}
+
+\newlength{\JadePosterContentWidth}
+
+\setlength{\JadePosterContentWidth}{%
+	\dimexpr\paperwidth-2\JadePosterMarginHorizontal\relax
+}
+
+\setbeamersize{
+	text margin left=\JadePosterMarginHorizontal,
+	text margin right=\JadePosterMarginHorizontal
+}
+
+% Abstände und Breiten im Titelbereich
+
+\newlength{\JadePosterTitleVerticalSpace}
+\setlength{\JadePosterTitleVerticalSpace}{3cm}
+
+\newlength{\JadePosterTitleGap}
+\setlength{\JadePosterTitleGap}{0cm}
+
+\newlength{\JadePosterTitleInnerWidth}
+\newlength{\JadePosterTitleLogoWidth}
+\newlength{\JadePosterTitleTextWidth}
+
+% Verfügbare Breite innerhalb des Titelkastens:
+% - linker Innenabstand - \JadePosterTitleGap
+% - Abstand zwischen Logo und Text - \JadePosterTitleGap
+% - rechter Innenabstand - \JadePosterTitleGap
+% - beide Rahmenstärken - je 4pt
+\setlength{\JadePosterTitleInnerWidth}{%
+	\dimexpr
+	\JadePosterContentWidth
+	- 3cm					% links, rechts
+	-\JadePosterTitleGap	%  mitte
+	- 8pt					% Rahmenstärke
+	\relax
+}
+
+\setlength{\JadePosterTitleLogoWidth}{%
+	.33\JadePosterTitleInnerWidth
+}
+
+\setlength{\JadePosterTitleTextWidth}{%
+	\dimexpr
+	\JadePosterTitleInnerWidth
+	- \JadePosterTitleLogoWidth
+	\relax
+}
+
+% Abstände zwischen den Poster-Spalten
+\newlength{\JadePosterColumnGap}
+\setlength{\JadePosterColumnGap}{1cm}
+
+\newlength{\JadePosterTwoColumnWidth}
+
+\setlength{\JadePosterTwoColumnWidth}{%
+	\dimexpr
+	(\JadePosterContentWidth-\JadePosterColumnGap)/2
+	\relax
+}
+
+\newlength{\JadePosterThreeColumnWidth}
+
+\setlength{\JadePosterThreeColumnWidth}{%
+	\dimexpr
+	(\JadePosterContentWidth-2\JadePosterColumnGap)/3
+	\relax
+}
+
+\newlength{\JadePosterColumnHeight}
+\setlength{\JadePosterColumnHeight}{63cm}
+
+% ========== %
+% Umgebungen
+% ========== %
+
+% nur zum testen der Seitenränder
+\newcommand{\JadePosterFrameBorder}{%
+	\begin{tikzpicture}[remember picture,overlay]
+		\draw[
+		jadegruen,
+		line width=4pt
+		]
+		([xshift=\JadePosterMarginHorizontal,yshift=-\JadePosterMarginVertical-13cm]current page.north west)
+		rectangle
+		([xshift=-\JadePosterMarginHorizontal,yshift=\JadePosterMarginVertical]current page.south east);
+	\end{tikzpicture}%
+}
+
+%------ %
+% Frame %
+%------ %
+
+\newenvironment{posterframe}{%
+	\begin{frame}[t]
+		\vspace*{\JadePosterTitleVerticalSpace}%
+		\makepostertitle%
+	}{%
+		\vspace*{\JadePosterMarginVertical}%
+%		\JadePosterFrameBorder%
+	\end{frame}%
+}
+
+%-------- %
+% Spalten %
+%-------- %
+
+\newenvironment{postercolumns}{%
+	\begin{columns}[
+		T,
+		totalwidth=\JadePosterContentWidth
+		]
+	}{%
+	\end{columns}
+	\vspace{2ex}
+}
+
+\newenvironment{postertwocolumn}{%
+	\begin{column}{\JadePosterTwoColumnWidth}%
+	}{%
+	\end{column}
+}
+
+\newenvironment{posterthreecolumn}{%
+	\begin{column}{\JadePosterThreeColumnWidth}%
+		\begin{minipage}[t][\JadePosterColumnHeight][t]{\linewidth}%
+	}{%
+	\end{minipage}%
+	\end{column}
+}
+
+%------- %
+% Blöcke %
+%------- %
+
+\tcbset{
+	jadeposterblock/.style={
+		colback=hintergrund,
+		boxrule=0pt,
+		arc=0pt,
+		left=1cm,
+		right=1cm,
+		top=.7cm,
+		bottom=.7cm,
+		fonttitle=\bfseries\Large,
+		coltitle=white,
+		toptitle=.5ex,
+		%	bottomtitle=.25ex
+		fontupper=\fontsize{\JadePosterFontSize}{\JadePosterLineHeight}\selectfont,
+	}
+}
+
+\newtcolorbox{posterblock}[1]{
+	jadeposterblock,
+	colbacktitle=jadegrau,
+	title={\strut #1}
+}
+
+\newtcolorbox{posterexampleblock}[1]{
+	jadeposterblock,
+	colbacktitle=jadegruen,
+	title={\strut #1}
+}
+
+\newtcolorbox{posteralertblock}[1]{
+	jadeposterblock,
+	colbacktitle=jaderot,
+	title={\strut #1}
+}
+
+\newtcolorbox{innerposterblock}[1]{
+	jadeposterblock,
+	colback=white,
+	colbacktitle=jadegrau,
+	fonttitle=\bfseries\large,
+	title={\strut #1}
+}
+
+
+% ============ %
+% Titelbereich %
+% ============ %
+
+\newcommand{\JadePosterTitleGraphic}{}
+
+\newcommand{\Titelgrafik}[1]{%
+	\renewcommand{\JadePosterTitleGraphic}{#1}%
+}
+
+
+\newcommand{\makepostertitle}{%
+	\begin{tcolorbox}[
+		width=\JadePosterContentWidth,
+		colback=white,
+		colframe=jaderot,
+		boxrule=4pt,
+		bottomrule=20pt,
+		arc=0pt,
+		left=1.5cm,
+		right=1.5cm,
+		top=1cm,
+		bottom=1cm
+		]
+		
+		\begin{minipage}[c]{\JadePosterTitleLogoWidth}
+			\JadeLogo[height=7cm]	
+		\end{minipage}%
+		\hspace{\JadePosterTitleGap}%	
+		\begin{minipage}[c]{\JadePosterTitleTextWidth}
+			\raggedright
+			{\fontsize{20}{25}\selectfont
+				\color{jadegrau}
+				\prüfungsart\ \modul, Studiengang\ \studiengang
+			}
+			
+			
+			\vspace{1ex}
+			
+			
+			\begin{flushright}
+				\begin{minipage}[c]{10cm}
+					\raggedleft
+					\includegraphics[height=5cm]{\JadePosterTitleGraphic}
+				\end{minipage}%
+			\end{flushright}
+			
+			\vspace{-14ex}
+			
+			{\fontsize{48}{60}\selectfont
+				\bfseries
+				\color{jaderot}
+				\titel
+			}
+			
+			\vspace{1.5ex}
+			
+			{\fontsize{40}{50}\selectfont
+				\bfseries
+				\color{jadegrau}
+				\insertsubtitle
+			}
+			
+			
+			
+			\vspace{2ex}
+	
+			{\fontsize{24}{30}\selectfont
+				\begin{minipage}[t]{5cm}
+					\textbf{Verfasser:}\\
+					\textbf{Betreuer:}
+				\end{minipage}%
+				\begin{minipage}[t]{\dimexpr\JadePosterTitleTextWidth-5cm\relax}
+					\insertauthor\\
+					\betreuer
+				\end{minipage}
+			}
+			
+			\vspace{-4.75ex}
+			
+			\begin{flushright}
+				{\fontsize{20}{25}\selectfont
+					\color{jadegrau}
+					\insertinstitute\\
+					\insertdate
+				}
+			\end{flushright}
+		\end{minipage}%
+
+		
+
+		
+	\end{tcolorbox}
+%	\vspace{\JadePosterTitleVerticalSpace}
+}
+
+% ---------------- %
+% Poster-Fußzeile
+% ---------------- %
+
+\setbeamercolor{poster footer left}{
+	fg=jadegrau,
+	bg=hintergrund
+}
+
+\setbeamercolor{poster footer center}{
+	fg=jaderot,
+	bg=jadegrau!50
+}
+
+\setbeamercolor{poster footer right}{
+	fg=jadegrau,
+	bg=hintergrund
+}
+
+\setbeamerfont{poster footer}{
+	size=\fontsize{24}{30}\selectfont
+}
+
+\setbeamerfont{poster footer center}{
+	size=\fontsize{24}{30}\selectfont,
+	series=\bfseries
+}
+
+\defbeamertemplate*{footline}{jadeposter}{%
+	\leavevmode
+	\hbox{%
+		% Name
+		\begin{beamercolorbox}[
+			wd=.25\textwidth,
+			ht=7ex,
+			dp=3ex,
+			]{poster footer left}%
+			\usebeamerfont{poster footer}%
+			\hspace*{\JadePosterMarginHorizontal}%
+			\insertauthor
+		\end{beamercolorbox}%
+		%
+		% Titel
+		\begin{beamercolorbox}[
+			wd=.5\textwidth,
+			ht=7ex,
+			dp=3ex,
+			center
+			]{poster footer center}%
+			\usebeamerfont{poster footer center}%
+			\inserttitle\ -- \insertsubtitle
+		\end{beamercolorbox}%
+		%
+		% Datum
+		\begin{beamercolorbox}[
+			wd=.25\textwidth,
+			ht=7ex,
+			dp=3ex,
+			right
+			]{poster footer right}%
+			\usebeamerfont{poster footer}%
+			\insertshortdate{}%
+			\hspace*{\JadePosterMarginHorizontal}%
+		\end{beamercolorbox}%
+	}%
+}
+
+%\setbeamertemplate{footline}[jadeposter]

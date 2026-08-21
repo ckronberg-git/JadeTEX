@@ -1,0 +1,197 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jadearticlelayout}[2026 Jade Article Layout]
+
+% ------------------------------------------------
+% Seitenlayout und Listen
+% ------------------------------------------------
+
+\RequirePackage[headsepline]{scrlayer-scrpage}
+\RequirePackage[shortlabels]{enumitem}
+\RequirePackage[onehalfspacing]{setspace}
+\RequirePackage{lastpage}
+\RequirePackage{tcolorbox}
+
+\setlength{\parskip}{0.5ex plus 0.25ex minus 0.25ex}   
+
+\setlist[enumerate]{label=\alph*)}
+
+\newlength{\normalparindent}
+\setlength{\normalparindent}{\the\parindent}
+
+%--------------------%
+% Part 
+%--------------------%
+
+\makeatletter
+	\def\@part[#1]#2{%
+	\thispagestyle{empty}%
+	\vspace*{144pt}% vertical spacing
+	\ifnum \c@secnumdepth >\m@ne
+		\refstepcounter{part}%
+		\addcontentsline{toc}{part}{\thepart\hspace{1em}#1 }%
+	\else
+		\addcontentsline{toc}{part}{#1}%
+	\fi
+	{%
+		\centering% horizontal spacing
+		\interlinepenalty \@M
+		\normalfont
+		\ifnum \c@secnumdepth >\m@ne
+			\Large\bfseries
+			\textcolor{jadegrau}{\exo{\partname\nobreakspace\thepart}}
+			\par\nobreak
+		\fi
+		\huge\bfseries
+		\textcolor{jaderot}{\exo{#2}}%
+		\markboth{}{}%
+		\par
+	}%
+	\nobreak
+	\vskip 3ex
+	\@afterheading
+}
+\makeatother
+
+% ------------------------------------------------
+% Section, Subsection und Subsubsection
+% ------------------------------------------------
+
+ \addtokomafont{section}{\exo\Large\bfseries\color{jaderot}}
+ \addtokomafont{subsection}{\exo\large\bfseries\color{white}}
+
+
+\setkomafont{section}{\exo\bfseries\Large\color{jaderot}}
+\setkomafont{subsection}{\exo\bfseries\large\color{jadegrau}}
+\setkomafont{subsubsection}{\exo\bfseries\normalsize\color{jadegrau}}
+
+%\makeatletter
+%\renewcommand{\sectionlinesformat}[4]{%
+%	\Ifstr{#1}{section}{%
+%		\fcolorbox{jaderot}{jaderot}{%
+%		    \strut
+%			% \hspace*{.1em}%
+%		}%
+%		\fcolorbox{jaderot}{white}{%
+%		    % \parbox{\dimexpr.6\linewidth
+%		    % -2\fboxrule-2\fboxsep-#2}{%
+%				\raggedsection
+%				\exolight\Large\bfseries\color{jaderot}
+%				\hspace*{#2}%
+%				\strut
+%				\hspace*{1em}%
+%				\@hangfrom{#3}{#4}%
+%				\hspace{1em}
+%			% }%
+%		}%
+%	}{%
+%		\Ifstr{#1}{subsection}{%
+%			% \hspace{1em}
+%			\colorbox{jadegrau}{%
+%			    \hspace*{#2}%
+%			    \hspace*{1em}%
+%			    % \parbox{\dimexpr.8\linewidth
+%			    % -2\fboxrule-2\fboxsep-#2}{%
+%			        \raggedsection
+%			        \exolight\large\bfseries\color{white}
+%			        \strut
+%			        \@hangfrom{#3}{#4}%
+%			        \hspace*{1em}%
+%			    % }%
+%			}%
+%		}{%
+%			\@hangfrom{\hskip #2#3}{#4}%
+%		}%
+%	}%
+%}
+%\makeatother
+
+
+% --------------------%
+% Kopf- und Fußzeilen
+% --------------------%
+
+\clearpairofpagestyles
+
+\automark[subsection]{section}
+
+\ihead{}
+\chead{}
+\ohead{\headmark}
+
+\ifoot{}
+\cfoot{}
+\ofoot{}
+
+\lefoot*{%
+    \pagemark\enskip
+    \textcolor{jaderot}{\rule[-\dp\strutbox]{1pt}{\baselineskip}}
+    \enskip
+    \small{\fach}%
+}
+
+\rofoot*{%
+    \small{\fach}\enskip
+    \textcolor{jaderot}{\rule[-\dp\strutbox]{1pt}{\baselineskip}}
+    \enskip
+    \pagemark
+}
+
+\renewcommand*\sectionmarkformat{\exolight\sectionformat}
+\renewcommand*\subsectionmarkformat{\exolight\subsectionformat}
+
+\addtokomafont{pageheadfoot}{\exolight}
+\addtokomafont{pagenumber}{\exolight}
+\addtokomafont{headsepline}{\color{jaderot}}
+
+\setlength{\headheight}{50pt}
+
+
+% ----------------- %
+% Pagestyle Jade HS
+% ----------------- %
+
+\defpagestyle{jadehs}{% 
+	% Kopf
+    (\textwidth, 0pt)% Linie über Kopfzeile
+    {}% Kopfzeile für linke Seiten
+    {}% Kopfzeile für rechte Seiten
+    {}% Kopfzeile für einseitiges Layout
+    (\textwidth, 0pt)% Linie unter Kopfzeile
+}{%
+	% Fuß
+    % (\textwidth, 1pt)%
+    {}%  Linke / ungerade Seiten
+    {}%  Rechte / gerade Seiten
+    {\centerline{\small{\fußzeile}}}%  einseitiges Layout
+    % (\textwidth, 1pt)% 
+}
+
+% -------------------------------------- %
+% Pagestyle Deckblatt für Aufgabenzettel
+% -------------------------------------- %
+
+\defpagestyle{deckblatt}{% 
+	% Kopf
+    (\textwidth, 0pt)% Linie über Kopfzeile
+    {}% Kopfzeile für linke Seiten
+    {}% Kopfzeile für rechte Seiten
+    {%
+        \parbox{.5\textwidth}{%
+            \textbf{\textcolor{jadegrau}{\fach}}\\[.5ex] 
+            \semester\\
+            \dozent
+        }%
+        \hfill
+        \parbox{.2\textwidth}{%
+            \JadeLogo[height=1.75cm] 
+        }%
+    }% Kopfzeile für einseitiges Layout
+    (\textwidth, 0pt)% Linie unter Kopfzeile
+}{% Fußdefinition
+    % (\textwidth, 1pt)%
+    {}%  Linke / ungerade Seiten
+    {}%  Rechte / gerade Seiten
+    {}%  einseitiges Layout
+    % (\textwidth, 1pt)% 
+}
+

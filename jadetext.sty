@@ -1,0 +1,45 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jadetext}[2026 Jade Text Settings]
+
+% ------- %
+% Sprache
+% ------- %
+
+\RequirePackage{polyglossia}			% xelatex-Alternative zu babel
+
+\setmainlanguage[
+	spelling=new,
+	babelshorthands=true
+]{german}
+
+\setotherlanguage{english}
+
+\RequirePackage[autostyle=true]{csquotes}
+
+% ---------- %
+% Typografie
+% ---------- %
+
+\RequirePackage[protrusion=false]{microtype}    % Mikrotypografie; Protrusion mit XeLaTeX deaktiviert
+\RequirePackage{ellipsis}            			% Weißraum um Auslassungspunkte im Text
+\RequirePackage{ragged2e}            			% Flattersatz mit Silbentrennung
+\RequirePackage{multicol}            			% zweispaltiger Text
+\RequirePackage[bottom]{footmisc}    			% Fußnoten am Seitenende
+\RequirePackage{hyphenat}            			% \hyp{} für Silbentrennung bei Bindestrichwörtern
+
+% ------------------------- %
+% Absatz- und Seitenumbruch
+% ------------------------- %
+
+\widowpenalty=500
+\clubpenalty=500
+
+% ------------------------ %
+% Überarbeitungsumgebungen
+% ------------------------ %
+
+\newcommand{\todo}[1]{\textbf{{\color{red}#1}}}
+\newcommand{\consider}[1]{\textbf{{\color{blue}#1}}}
+
+
+

@@ -1,0 +1,64 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jadetables}[2026 Jade Tables]
+
+% ------------------------------------------------
+% Tabellen-Grundlagen
+% ------------------------------------------------
+
+\RequirePackage{array}
+\RequirePackage{longtable}
+\RequirePackage{float}
+\RequirePackage{multirow}
+\RequirePackage{booktabs}
+
+% \RequirePackage{framed}
+
+% ------------------------------------------------
+% Flexible Tabellen
+% ------------------------------------------------
+
+\RequirePackage{tabularx}       % tabellen mit variabler spaltenbreite
+\RequirePackage{ltablex}        % tabellen mit seitenumbruch
+
+\keepXColumns                   % einstellung fuer kombination aus tabularx und ltablex
+
+\newcolumntype{Y}{>{\hspace{0pt}\raggedright\arraybackslash}X} 			% X-Spalte linksbündig
+\newcolumntype{Z}{>{\hspace{0pt}\centering\arraybackslash}X} 			% X-Spalte zentriert
+
+\newcolumntype{L}[1]{>{\hspace{0pt}\raggedright\arraybackslash}p{#1}} 	% linksbündig mit Breitenangabe
+\newcolumntype{C}[1]{>{\hspace{0pt}\centering\arraybackslash}p{#1}} 	% zentriert mit Breitenangabe
+\newcolumntype{R}[1]{>{\hspace{0pt}\raggedleft\arraybackslash}p{#1}} 	% rechtsbündig mit Breitenangabe
+
+% ------------------------------------------------
+% Tabellensatz
+% ------------------------------------------------
+
+\renewcommand{\arraystretch}{1.1}
+
+% ------------------------------------------------
+% Tabellen- und Abbildungsbeschriftungen
+% ------------------------------------------------
+
+
+\RequirePackage[font=small]{caption}        % Abbildungsüberschriften
+\RequirePackage{subcaption}                 % mehrere bilder nebeneinander 
+
+\captionsetup{
+	font={small,color=jaderot}
+}
+
+\makeatletter
+\@ifundefined{subfigure}{%
+    % subfigure nicht definiert – keine Einstellung
+}{%
+    \captionsetup[subfigure]{
+          labelformat=empty,      % (a), (b), ...
+          % labelsep=space,          % Leerzeichen nach dem Label
+          % font=small,              % Schriftgröße
+          % labelfont={bf,rm},       % Label: fett und serifen
+          % textfont=rm,             % Text: serifen
+          justification=centering,
+          textfont={color=jadegruen}
+    }
+}
+\makeatother

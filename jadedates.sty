@@ -1,0 +1,229 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jadedates}[2026 Jade Dates]
+
+
+% ------------%
+% Datumsvariablen % 
+% ------------%
+
+\newcount\jadetag
+\newcount\jademonat
+\newcount\jadejahr
+
+% ----------------------%
+% Datum parsen und ausgeben 
+% ----------------------%
+
+\def\parseDate#1.#2.#3\relax{%
+  \jadetag=#1\relax
+  \jademonat=#2\relax
+  \jadejahr=#3\relax
+}
+
+% Erlaubt Übergabe eines Makros wie \startdatum
+\newcommand{\parseDateFromMacro}[1]{%
+  \expandafter\parseDate#1\relax
+}
+
+% Druckt zweistellig mit führender Null
+\newcommand{\printTwoDigits}[1]{%
+  \ifnum#1<10 0\fi\number#1%
+}
+
+% Gibt Datum mit führenden Nullen aus
+\newcommand{\printParsedDate}{%
+  \printTwoDigits{\jadetag}.\printTwoDigits{\jademonat}.\number\jadejahr%
+}
+
+% Allgemeine Funktion: \printDate{tt.mm.jjjj} oder \printDate{\datum}
+\newcommand{\printDate}[1]{%
+  \edef\tempa{#1}%
+  \expandafter\parseDate\tempa\relax
+  \printParsedDate%
+}
+
+% ----------------------%
+% Kalenderfunktionen 
+% ----------------------%
+
+% Schaltjahr-Prüfung (einfach, ohne 100er oder 400er)
+\newcount\maxtage
+\newif\ifschaltjahr
+\newcount\temp
+
+\newcommand{\isSchaltjahr}[1]{%
+  \temp=#1\relax
+  \divide\temp by 4
+  \multiply\temp by 4
+  \ifnum#1=\temp
+    \schaltjahrtrue
+  \else
+    \schaltjahrfalse
+  \fi
+}
+
+% Tagesanzahl im Monat bestimmen
+\newcommand{\daysInMonth}[2]{%
+  \ifnum#1=1 \maxtage=31\else
+  \ifnum#1=2
+    \isSchaltjahr{#2}%
+    \ifschaltjahr
+      \maxtage=29
+    \else
+      \maxtage=28
+    \fi
+  \else
+  \ifnum#1=3 \maxtage=31\else
+  \ifnum#1=4 \maxtage=30\else
+  \ifnum#1=5 \maxtage=31\else
+  \ifnum#1=6 \maxtage=30\else
+  \ifnum#1=7 \maxtage=31\else
+  \ifnum#1=8 \maxtage=31\else
+  \ifnum#1=9 \maxtage=30\else
+  \ifnum#1=10 \maxtage=31\else
+  \ifnum#1=11 \maxtage=30\else
+  \ifnum#1=12 \maxtage=31\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+}
+
+% ----------------------%
+% Tage addieren 
+% ----------------------%
+
+% addDays: Addiert auf ein Datum gegebene Anzahl Tage dazu
+% setzt global \jadetag, \jademonat, \jadejahr, 
+% druckt nichts und liefert nichts zurück.
+\newcommand{\addDays}[2]{%
+  \edef\tempdate{#1}%
+  \expandafter\addDaysAux\expandafter{\tempdate}{#2}%
+}
+\newcommand{\addDaysAux}[2]{%
+    \def\parsedDate{#1}%
+    \expandafter\parseDate\parsedDate\relax
+    \advance\jadetag by #2
+    \loop
+        \daysInMonth{\jademonat}{\jadejahr} % setzt \maxtage richtig
+        \ifnum\jadetag>\maxtage
+            \advance\jadetag by -\maxtage
+            \advance\jademonat by 1
+            \ifnum\jademonat>12
+                \jademonat=1
+                \advance\jadejahr by 1
+            \fi
+        \fi
+        \ifnum\jadetag>\maxtage
+    \repeat
+}
+
+% addDays: Ausgabe
+\newcommand{\printAddDays}[2]{%
+    \addDays{#1}{#2}%
+    \printParsedDate%
+}
+
+% addDays: Rückgabe in Makro #3
+\newcommand{\saveAddDays}[3]{%
+  \addDays{#1}{#2}%
+  \edef#3{\printParsedDate}%
+}
+
+% ----------------------%
+% Monate addieren 
+% ----------------------%
+
+% addMonth: Addiert auf ein Datum gegebene Anzahl Monate dazu
+% setzt global \jadetag, \jademonat, \jadejahr, 
+% druckt nichts und liefert nichts zurück.
+\newcommand{\addMonths}[2]{%
+  \edef\tempdate{#1}%
+  \expandafter\addMonthsAux\expandafter{\tempdate}{#2}%
+}
+\newcommand{\addMonthsAux}[2]{%
+  \def\parsedDate{#1}%
+  \expandafter\parseDate\parsedDate\relax
+  \advance\jademonat by #2
+  \loop
+    \ifnum\jademonat>12
+      \advance\jademonat by -12
+      \advance\jadejahr by 1
+  \repeat
+  % Begrenze Tag auf max. Tage im Zielmonat
+  \daysInMonth{\jademonat}{\jadejahr}
+  \ifnum\jadetag>\maxtage
+    \jadetag=\maxtage
+  \fi
+}
+
+
+% addMonths: Ausgabe
+\newcommand{\printAddMonths}[2]{%
+    \addMonths{#1}{#2}%
+    \printParsedDate%
+}
+
+% addMonths: Rückgabe in Makro #3
+\newcommand{\saveAddMonths}[3]{%
+    \addMonths{#1}{#2}%
+    \edef#3{\printParsedDate}%
+}
+
+% ----------------------%
+% Jahre addieren 
+% ----------------------%
+
+% addYears: Addiert auf ein Datum gegebene Anzahl Jahre dazu
+% setzt global \jadetag, \jademonat, \jadejahr, 
+% druckt nichts und liefert nichts zurück.
+\newcommand{\addYears}[2]{%
+  \edef\tempdate{#1}%
+  \expandafter\addYearsAux\expandafter{\tempdate}{#2}%
+}
+\newcommand{\addYearsAux}[2]{%
+  \def\parsedDate{#1}%
+  \expandafter\parseDate\parsedDate\relax
+  \advance\jadejahr by #2
+  % Begrenze Tag auf max. Tage im Zielmonat (z.B. Schaltjahr)
+  \daysInMonth{\jademonat}{\jadejahr}
+  \ifnum\jadetag>\maxtage
+    \jadetag=\maxtage
+  \fi
+}
+
+% addYears: Ausgabe
+\newcommand{\printAddYears}[2]{%
+    \addYears{#1}{#2}%
+    \printParsedDate%
+}
+
+% addYears: Rückgabe in Makro #3
+\newcommand{\saveAddYears}[3]{%
+    \addYears{#1}{#2}%
+    \edef#3{\printParsedDate}%
+}
+
+
+% ----------------------------------------- %
+% Datum speichern und Bestandteile auslesen 
+% ----------------------------------------- %
+
+% Speichert das aktuell geparste Datum in ein neues Makro
+\newcommand{\saveDatum}[1]{%
+  \xdef#1{\printParsedDate}%
+}
+
+% Tag extrahieren
+\newcommand{\getDay}[1]{%
+  \expandafter\getDayAux#1\relax
+}
+\def\getDayAux#1.#2.#3\relax{#1}
+
+% Monat extrahieren
+\newcommand{\getMonth}[1]{%
+  \expandafter\getMonthAux#1\relax
+}
+\def\getMonthAux#1.#2.#3\relax{#2}
+
+% Jahr extrahieren
+\newcommand{\getYear}[1]{%
+  \expandafter\getYearAux#1\relax
+}
+\def\getYearAux#1.#2.#3\relax{#3}

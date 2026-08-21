@@ -1,0 +1,46 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jadetheorems}[2026 Jade Theorems]
+
+% ============================================================
+% Theorem-Umgebungen
+% ============================================================
+
+\RequirePackage{amsthm}
+
+\newtheorem{satz}{Satz}[section] 		% Nummerierung pro Kapitel
+\newtheorem{lemma}[satz]{Lemma}			% gleiche Nummerierung wie Satz
+\newtheorem{korollar}[satz]{Korollar}	% gleiche Nummerierung wie Satz
+
+\newtheorem{problem}{Problem} 			% eigene Nummerierung, global
+
+\newenvironment{definition}[1][Definition.]%
+    {\begin{trivlist}
+    \item[\hskip \labelsep {\bfseries #1}]}%
+    {\end{trivlist}}
+  
+\newenvironment{bemerkung}[1][Bemerkung.]%
+    {\begin{trivlist}
+    \item[\hskip \labelsep {\bfseries #1}]}%
+    {\end{trivlist}}
+  
+\newenvironment{beispiel}[1][Beispiel.]%
+    {\begin{trivlist}
+    \item[\hskip \labelsep {\bfseries #1}]}%
+    {\end{trivlist}}
+    
+ % ============================================================
+ % Algorithmen
+ % ============================================================
+	
+\RequirePackage[section]{algorithm}
+\RequirePackage{algpseudocode}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\floatname{algorithm}{Algorithmus}
+
+\newcommand{\algrule}[1][.2pt]{%
+	\par\vskip.5\baselineskip
+	\hrule height #1
+	\par\vskip.5\baselineskip
+}

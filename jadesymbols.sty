@@ -1,0 +1,36 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jadesymbols}[2026 Jade Symbols]
+
+% ------------------------------------------------
+% Trennzeichen
+% ------------------------------------------------
+
+\newcommand{\trennstrich}{%
+	\enskip
+	\textcolor{jaderot}{\rule[-\dp\strutbox]{1pt}{\baselineskip}}%
+	\enskip
+}
+
+% ----------------- %
+% Symbole und Icons
+% ----------------- %
+
+\RequirePackage{marvosym}           % \Telefon \Letter
+\RequirePackage{fontawesome}        % \faHome \faCalendar \faCommenting
+\RequirePackage[gen]{eurosym} 		% \euro
+\RequirePackage{epsdice}        	% Würfelsymbole
+\RequirePackage{stmaryrd}       	% \lightning
+
+%\RequirePackage[misc]{ifsym}    	% Strichliste: \StrokeOne, ... Konflikt mit marvosym
+\newcommand{\StrokeOne}{|}          
+\newcommand{\StrokeTwo}{||}         
+\newcommand{\StrokeThree}{|||}      
+\newcommand{\StrokeFour}{||||}      
+\newcommand{\StrokeFive}{\StrokeFour\!\!\!\!\!\!\diagup}
+
+% ------------ %
+% SI-Einheiten
+% ------------ %
+
+\RequirePackage{siunitx} 
+\sisetup{locale = DE} 

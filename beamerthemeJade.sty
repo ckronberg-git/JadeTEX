@@ -1,0 +1,498 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeJade}[2026 Jade Beamer Theme]
+
+% ==========================================================================
+% Beamer-spezifische Symbole
+% ==========================================================================
+
+\makeatletter
+
+% Kugel entsprechend dem Beamer-Item-Symbol
+\newcommand{\jadeball}{%
+	\parbox[t]{10pt}{%
+		\raisebox{0.2pt}{%
+			\beamer@usesphere{item projected}{bigsphere}%
+		}%
+	}%
+}
+
+% Nummerierte Kugel
+
+\newcommand{\jadeballnum}[1]{% 
+	\tikz[baseline=(char.base)]{
+%		\shade[
+%			ball color=jaderot, 
+%			opacity=0.9
+%		] (0,0) circle (1.25ex); 
+		\shade[
+			shading=ball, 
+			ball color=jaderot, 
+			opacity=0.9
+		] (0,0) circle (1.25ex); 
+		\node at (0,0) [
+			text=white,
+			font=\sffamily\scriptsize
+		] (char) {#1}; 
+	}% 
+}
+
+\makeatother
+
+
+% ==========================================================================
+% Grundlayout
+% ==========================================================================
+
+\RequirePackage[onehalfspacing]{setspace} 
+
+% ------------------------------------- %
+% Farben
+% ------------------------------------- %
+
+
+\setbeamercolor{background canvas}{
+	fg=black,
+	bg=white
+}
+
+\setbeamercolor{structure}{
+	fg=jaderot,
+	bg=white
+}
+
+\setbeamercolor{normal text}{
+	fg=black
+}
+
+\setbeamercolor{example text}{
+	fg=jadegrau
+}
+
+\setbeamercolor{alerted text}{
+	fg=jaderot
+}
+
+
+% ------------------------------------- %
+% Logo
+% ------------------------------------- %
+
+\logo{\JadeLogo[height=1cm]%
+	\vspace{200pt}%
+	\hspace{6pt}% adjust space for top right corner
+}
+
+
+\titlegraphic{
+	\JadeLogo[height=2cm]
+}
+
+% ------------------------------------- %
+% Allgemeine Beamer-Einstellungen
+% ------------------------------------- %
+
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamerfont{footnote}{size=\tiny}
+
+\addtobeamertemplate{block begin}{}{\justifying} 
+
+% ==========================================================================
+% Kopf- und Fußzeile
+% ==========================================================================
+
+% ------------------------------------- %
+% Farben und Formate
+% ------------------------------------- %
+
+\setbeamercolor{page number}{
+	fg=jadegrau,
+	bg=hintergrund
+}
+
+\setbeamercolor*{author in head/foot}{
+	fg=jadegrau, 
+	bg=hintergrund
+}
+
+\setbeamercolor*{title in head/foot}{
+	fg=jaderot, 
+	bg=jadegrau!50
+}
+
+
+\setbeamercolor*{date in head/foot}{
+	fg=white, 
+	bg=jadegrau
+}
+
+\setbeamercolor*{section in head/foot}{
+	fg=jadegrau, 
+	bg=hintergrund
+}
+
+\setbeamercolor*{subsection in head/foot}{
+	fg=jadegrau, 
+	bg=hintergrund
+}
+
+\setbeamerfont*{title in head/foot}{
+	series=\bfseries
+}
+
+% Fußzeile
+\defbeamertemplate*{footline}{jhs}{%
+	\leavevmode % horizontal mode for boxes
+	\hbox{%
+		\begin{beamercolorbox}[
+			wd=.25\paperwidth,
+			ht=2.25ex,
+			dp=1ex,
+			center
+		]{date in head/foot}
+			\usebeamerfont{date in head/foot}%
+			\insertshortdate{}%
+		\end{beamercolorbox}%
+		%
+		\begin{beamercolorbox}[
+			wd=.5\paperwidth,
+			ht=2.25ex,
+			dp=1ex,
+			center
+		]{title in head/foot}
+			\usebeamerfont{title in head/foot}%
+			\insertshorttitle%
+		\end{beamercolorbox}%
+		%
+		\begin{beamercolorbox}[
+			wd=.25\paperwidth,
+			ht=2.25ex,
+			dp=1ex,
+			right
+		]{page number}
+			\usebeamerfont{page number}%
+			\insertframenumber%
+			\hspace*{4ex}%
+		\end{beamercolorbox}%
+	}%
+}
+
+
+% ==========================================================================
+% Blöcke
+% ==========================================================================
+
+\setbeamertemplate{blocks}[default]
+
+% ------------------------------------- %
+% Farben und Formate
+% ------------------------------------- %
+
+\setbeamerfont{block title}{
+	size=\normalsize,
+	series=\bfseries
+}
+
+\setbeamerfont{block body}{
+	size=\normalsize
+}
+
+\setbeamercolor{block title}{
+	fg=white,
+	bg=jadegrau
+}
+
+\setbeamercolor{block title strong}{
+	fg=jaderot,
+	bg=jadegrau
+}
+
+\setbeamercolor{block title alerted}{
+	fg=white,
+	bg=jaderot!80
+}
+
+\setbeamercolor{block title example}{
+	fg=white,
+	bg=jadegruen
+}
+
+\setbeamercolor{block body}{
+	bg=hintergrund
+}
+
+\setbeamercolor{block body strong}{
+	bg=hintergrund
+}
+
+\setbeamercolor{block body alerted}{
+	bg=hintergrund
+}
+
+\setbeamercolor{block body example}{
+	bg=hintergrund
+}
+
+% ==========================================================================
+% Listen und Inhaltsverzeichnis
+% ==========================================================================
+
+% --------------------------------------------------------------------------
+% Itemize / Enumerate
+% --------------------------------------------------------------------------
+
+\setbeamertemplate{items}[ball]
+
+\setbeamercolor*{item projected}{
+	bg=jaderot,
+	fg=white
+}
+
+\setbeamercolor*{subitem projected}{
+	bg=jadegrau,
+	fg=white
+}
+
+\setbeamercolor*{subsubitem projected}{
+	bg=jadegrau!50, 
+	fg=white
+}
+
+% --------------------------------------------------------------------------
+% Inhaltsverzeichnis
+% --------------------------------------------------------------------------
+
+\setbeamertemplate{sections/subsections in toc}[ball]
+
+\setbeamercolor*{section number projected}{
+	bg=jaderot, 
+	fg=white
+}
+
+\setbeamercolor*{subsection number projected}{
+	bg=jadegrau,
+	fg=white
+}
+
+\setbeamercolor*{subsubsection number projected}{
+	bg=jadegrau!50,
+	fg=white
+}
+
+\setbeamercolor{section in toc}{
+	fg=jaderot
+}
+
+\setbeamercolor{section in toc shaded}{
+	fg=jaderot!80
+}
+
+\setbeamercolor{subsection in toc}{
+	fg=black
+}
+
+\setbeamercolor{subsection in toc shaded}{
+	fg=jadegrau
+}
+
+% ==========================================================================
+% Frametitel
+% ==========================================================================
+
+\setbeamerfont*{frametitle}{
+	size=\Large,
+	series=\bfseries
+}
+
+\setbeamercolor*{frametitle}{
+	fg=jaderot, 
+}
+
+\setbeamerfont*{framesubtitle}{
+	size=\normalsize,
+	series=\bfseries
+}
+
+\setbeamercolor*{framesubtitle}{
+	fg=jadegrau
+}
+
+% ---------------------------------------------
+% Trennlinien
+% ---------------------------------------------
+
+\setbeamercolor*{upper separation line head}{
+	bg=jadegrau
+}
+
+\setbeamercolor*{middle separation line head}{
+	bg=white
+}
+
+\setbeamercolor*{lower separation line head}{
+	bg=jaderot
+}
+
+
+% --------------------------------------------
+% Frametitle
+% --------------------------------------------
+
+\defbeamertemplate*{frametitle}{jhs}{%
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	ht=2.25ex,
+    	dp=1ex
+    ]{frametitle}%
+        \hspace*{1ex}%
+        \usebeamerfont{frametitle}% 
+        \insertframetitle%
+    \end{beamercolorbox}%
+    \nointerlineskip%
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	ht=1ex,
+    	dp=.67ex
+    ]{framesubtitle}%
+        \hspace*{1ex}%
+        \usebeamerfont{framesubtitle}%
+        \insertframesubtitle%
+    \end{beamercolorbox}%
+    \nointerlineskip%
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	colsep=.4pt
+    ]{upper separation line head}%
+    \end{beamercolorbox}%
+    \nointerlineskip%
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	colsep=.4pt
+    ]{middle separation line head}%
+    \end{beamercolorbox}%
+    \nointerlineskip%
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	colsep=.4pt
+    ]{lower separation line head}%
+    \end{beamercolorbox}%
+    \nointerlineskip%
+}
+
+
+% ==========================================================================
+% Titelseite
+% ==========================================================================e
+
+
+\setbeamercolor*{title}{
+	fg=jaderot
+}
+
+\setbeamerfont*{title}{
+	size=\Large,
+	series=\bfseries
+}
+
+\setbeamercolor*{subtitle}{
+	fg=jadegrau
+}
+
+\setbeamerfont*{date}{
+	size=\footnotesize
+}
+
+\defbeamertemplate*{title page}{jhs} {%
+	% Logo
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	ht=9ex,
+    	dp=4ex,
+    	right
+    ]{title graphic}%
+    	\inserttitlegraphic
+    	\hspace{6pt}%
+    \end{beamercolorbox}%
+    % Titel
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	ht=2.25ex,
+    	dp=1ex,
+    	center
+    ]{title}%
+		\usebeamerfont{title}% 
+		\inserttitle
+    \end{beamercolorbox}%
+    % Untertitel
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	ht=2.25ex,
+    	dp=1ex,
+    	center
+    ]{subtitle}%
+        \usebeamerfont{subtitle}% 
+        \insertsubtitle
+    \end{beamercolorbox}%
+    %
+    \vspace{2ex}% Bei zwei Autoren: 4ex
+    %
+    % Autor
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	ht=2.25ex,
+    	dp=1ex,
+    	center
+    ]{author}%
+        \usebeamerfont{author}%
+        \insertauthor
+    \end{beamercolorbox}%
+    % Institut
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	ht=2.25ex,
+    	dp=1ex,
+    	center
+    ]{institute}%
+        \usebeamerfont{institute}%
+        \insertinstitute
+    \end{beamercolorbox}%
+    %
+    \vspace{4ex}% Bei zwei Autoren: 2ex
+    %
+    % Trennlinien
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	colsep=.4pt
+    ]{upper separation line head}%
+    \end{beamercolorbox}%
+    \nointerlineskip
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	colsep=.4pt
+    ]{middle separation line head}%
+    \end{beamercolorbox}%
+    \nointerlineskip
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	colsep=.4pt
+    ]{lower separation line head}%
+    \end{beamercolorbox}%
+    %
+    \vspace{2ex}%
+    %
+    \begin{beamercolorbox}[
+    	wd=\paperwidth,
+    	ht=2.25ex,
+    	dp=1ex,
+    	center
+    ]{date}%
+        \usebeamerfont{date}%
+        \insertdate
+    \end{beamercolorbox}%
+}
+
+% ==========================================================================
+% Ende
+% ==========================================================================
+
+\mode<all>
